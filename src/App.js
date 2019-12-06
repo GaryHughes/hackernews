@@ -1,5 +1,6 @@
 // @ts-check
-import React, { Component, Children} from 'react';
+import React, { Component } from 'react';
+import axios from 'axios';
 import './App.css';
 
 const DEFAULT_QUERY = 'redux';
@@ -117,9 +118,8 @@ class App extends Component {
   }
 
   fetchSearchTopStories(searchTerm, page = 0) {
-    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
-      .then(response => response.json())
-      .then(result => this.setSearchTopStories(result))
+    axios(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
+      .then(result => this.setSearchTopStories(result.data))
       .catch(error => this.setState({ error }));
   }
 
