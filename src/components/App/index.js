@@ -18,6 +18,13 @@ import {
   PARAM_HPP
 } from '../../constants';
 
+const withLoading = (Component) => ({ isLoading, ...rest }) => 
+    isLoading
+    ? <Loading />
+    : <Component { ...rest } />
+
+
+export const ButtonWithLoading = withLoading(Button);
 
 export class App extends Component {
 
@@ -145,12 +152,12 @@ export class App extends Component {
         }
        
         <div className="interactions">
-          { isLoading
-            ? <Loading/>
-            : <Button onClick={() => this.fetchSearchTopStories(searchTerm, page + 1)}>
-                More
-              </Button>
-          }
+          <ButtonWithLoading
+            isLoading={isLoading}
+            onClick={() => this.fetchSearchTopStories(searchTerm, page + 1)}
+          >
+            More
+          </ButtonWithLoading>
         </div>
       </div>
     );
