@@ -1,84 +1,24 @@
 // @ts-check
 import React, { Component } from 'react';
 import axios from 'axios';
-import './App.css';
+import './index.css';
 
-const DEFAULT_QUERY = 'redux';
-const DEFAULT_HPP = '100';
+import { Search } from  '../Search';
+import { Button } from '../Button';
+import { Table } from '../Table';
 
-const PATH_BASE = 'https://hn.algolia.com/api/v1';
-const PATH_SEARCH = '/search';
-const PARAM_SEARCH = 'query=';
-const PARAM_PAGE = 'page=';
-const PARAM_HPP = 'hitsPerPage=';
-
-const Button = ({onClick, className = '', children}) =>
-  <button
-    onClick={onClick}
-    className={className}
-    type="button">
-      {children}
-  </button>
- 
-const Search = ({
-  value, 
-  onChange,
-  onSubmit, 
-  children
-}) =>
-  <form onSubmit={onSubmit}>
-    <input 
-      type="test"
-      value={value}
-      onChange={onChange} 
-    />
-    <button type="submit">
-      {children}
-    </button>
-  </form>
+import {
+  DEFAULT_QUERY,
+  DEFAULT_HPP,
+  PATH_BASE,
+  PATH_SEARCH,
+  PARAM_SEARCH,
+  PARAM_PAGE,
+  PARAM_HPP
+} from '../../constants';
 
 
-const largeColumn = {
-  width: '40%',
-};
-
-const midColumn = {
-  width: '30%',
-};
-
-const smallColumn = {
-  width: '10%',
-};
-
-const Table = ({list, onDismiss}) =>
-  <div className="table">
-    {list.map(item => 
-      <div key={item.objectID} className="table-row">
-        <span style={largeColumn}>
-          <a href={item.url}>{item.title}</a>
-        </span>
-        <span style={midColumn}>
-          {item.author}
-        </span>
-        <span style={smallColumn}>
-          {item.num_comments}
-        </span>
-        <span style={smallColumn}>
-          {item.points}
-        </span>
-        <span style={smallColumn}>
-          <Button 
-            onClick={() => onDismiss(item.objectID)} 
-            className="button-inline"
-            >
-              Dismiss
-          </Button>
-        </span>
-      </div>
-    )}
-  </div>
-
-class App extends Component {
+export class App extends Component {
 
   constructor(props) {
     
@@ -198,6 +138,7 @@ class App extends Component {
           onDismiss={this.onDismiss}
         />
         }
+       
         <div className="interactions">
           <Button onClick={() => this.fetchSearchTopStories(searchTerm, page + 1)}>
             More
