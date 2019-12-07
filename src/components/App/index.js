@@ -26,6 +26,27 @@ const withLoading = (Component) => ({ isLoading, ...rest }) =>
 
 export const ButtonWithLoading = withLoading(Button);
 
+const updateSearchTopStoriesState = (hits, page) => (prevState) => {
+      
+    const { searchKey, results } = prevState;
+    
+    const oldHits = results && 
+                    results[searchKey] ? 
+                    results[searchKey].hits : [];
+    
+    const updatedHits = [
+      ...oldHits,
+      ...hits
+    ];
+
+    return {
+      results: {
+        ...results, 
+        [searchKey]: { hits: updatedHits, page } 
+      },
+      isLoading: false
+    };
+  }
 
 export class App extends Component {
 
@@ -74,21 +95,9 @@ export class App extends Component {
       .catch(error => this.setState({ error }));
   }
 
-  setSearchTopStories(result) {
+   setSearchTopStories(result) {
     const { hits, page } = result;
-    const { searchKey, results } = this.state;
-    const oldHits = results && results[searchKey] ? results[searchKey].hits : [];
-    const updatedHits = [
-      ...oldHits,
-      ...hits
-    ];
-    this.setState({
-      results: {
-        ...results, 
-        [searchKey]: { hits: updatedHits, page } 
-      },
-      isLoading: false
-    });
+    this.setState(updateSearchTopStoriesState(hits, page));
   }
 
   onDismiss(id) {
